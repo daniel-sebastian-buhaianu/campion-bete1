@@ -34,10 +34,10 @@ int primaPozitie(int x, int v[], int n)
 	// returneaza prima pozitie a lui x
 	// in vectorul sortat crescator v cu n elemente
 	// daca x se afla in vector, sau -1 altfel
-	int st = 0, dr = n;
-	while (dr - st > 1)
+	int st = -1, dr = n;
+	while (dr-st > 1)
 	{
-		int mij = st + (dr - st)/2;
+		int mij = st + (dr-st)/2;
 		if (v[mij] < x)
 			st = mij;
 		else
@@ -51,20 +51,19 @@ int nrBeteLungime(int lg)
 {
 	sort(a, a+n);
 	sort(b, b+n);
-	int uz[NMAX], i, nr=0, poz;
+	int uz[NMAX], i, nr=0, poz, dif;
 	for (i = 0; i < n; i++)
 		uz[i] = 0;
 	for (i = 0; i < n; i++)
 	{
-		poz = primaPozitie(lg-a[i], b, n);
+		dif = lg-a[i];
+		poz = primaPozitie(dif, b, n);
 		if (poz >= 0)
 		{	
-			while (uz[poz]) poz++;
-			if (b[poz] == lg-a[i])
-			{
-				nr++;
-				uz[poz] = 1;
-			}
+			for (; uz[poz] && b[poz] == dif && poz < n; poz++);
+			if (poz < n)
+				if (b[poz] == dif)
+					nr++, uz[poz] = 1;
 		}
 	}
 	return nr;
