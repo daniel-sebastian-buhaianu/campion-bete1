@@ -29,32 +29,43 @@ int minim(int v[], int n)
 			min = v[i];
 	return min;
 }
-bool exista(int x, int v[], int n)
+int primaPozitie(int x, int v[], int n)
 {
-	// verifica daca x se afla in vectorul v cu n elemente
+	// returneaza prima pozitie a lui x
+	// in vectorul sortat crescator v cu n elemente
+	// daca x se afla in vector, sau -1 altfel
 	int st = 0, dr = n;
 	while (dr - st > 1)
 	{
 		int mij = st + (dr - st)/2;
-		if (v[mij] == x)
-			return 1;
 		if (v[mij] < x)
 			st = mij;
 		else
 			dr = mij;
 	}
-	return 0;
+	if (dr == n || v[dr] != x)
+		return -1;
+	return dr;
 }
 int nrBeteLungime(int lg)
 {
 	sort(a, a+n);
 	sort(b, b+n);
-	int nr = 0;
-	for (int i = 0; i < n; i++)
+	int uz[NMAX], i, nr=0, poz;
+	for (i = 0; i < n; i++)
+		uz[i] = 0;
+	for (i = 0; i < n; i++)
 	{
-		int dif = lg - a[i];
-		if (exista(dif, b, n))
-			nr++;
+		poz = primaPozitie(lg-a[i], b, n);
+		if (poz >= 0)
+		{	
+			while (uz[poz]) poz++;
+			if (b[poz] == lg-a[i])
+			{
+				nr++;
+				uz[poz] = 1;
+			}
+		}
 	}
 	return nr;
 }
